@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to the board</a>
+<div class="shell" id="app" aria-busy="true">
+  <header class="top">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span class="brand-name">TOKEN RADAR</span><span class="brand-sub">pre-token protocol watch</span></div>
+    <div class="top-meta" id="top-meta"><span>Snapshot loading…</span></div>
+  </header>
+
+  <section class="lede">
+    <div>
+      <p class="kicker">Which protocol is worth farming next?</p>
+      <h1 id="headline">Ranking the protocols that record no token yet</h1>
+      <p class="lede-text" id="lede-text">Every protocol with at least $50M of TVL and no token on record, plus every smaller pre-token protocol the snapshot carries — ranked by what a launch would be worth if the protocol's record stayed as it is. Implied value is this radar's own estimate, never a price and never a promise that a token comes.</p>
+    </div>
+    <div class="facts" id="facts"></div>
+  </section>
+
+  <section class="podium" id="podium" aria-label="Top three protocols"></section>
+
+  <div class="controls" id="controls">
+    <div class="field"><label for="q">Search</label><input type="search" id="q" placeholder="Name, category or chain…" autocomplete="off"></div>
+    <div class="field"><label for="category">Category</label><select id="category" aria-label="Filter by category"></select></div>
+    <div class="field"><label for="chain">Chain</label><select id="chain" aria-label="Filter by chain"></select></div>
+    <div class="field"><label for="sort">Sort by</label><select id="sort" aria-label="Sort the board">
+      <option value="implied">Implied value</option>
+      <option value="tvl">TVL</option>
+      <option value="growth">7-day growth</option>
+      <option value="age">Age with no token</option>
+      <option value="confidence">Confidence</option>
+      <option value="name">Name A–Z</option>
+    </select></div>
+    <div class="field check"><label class="check-label"><input type="checkbox" id="watchlist-only"> Watchlist only</label></div>
+    <div class="field tabs" role="group" aria-label="Token status">
+      <button type="button" id="tab-pre" aria-pressed="true">Pre-token</button>
+      <button type="button" id="tab-live" aria-pressed="false">Live token</button>
+    </div>
+    <span class="count" id="count"></span>
+  </div>
+
+  <main id="board" tabindex="-1"></main>
+
+  <section class="panel model" id="model-panel">
+    <h2>How implied value is computed</h2>
+    <p class="sub">One function scores every protocol. No name is special-cased and no row is hand-picked. The peer ratio is the heart of it: launched tokens do not all trade at one multiple of TVL, so each category is priced at what its own launched tokens actually fetch.</p>
+    <div class="formula" id="formula"></div>
+    <div class="model-grid">
+      <div><h3>1 · Peer calibration</h3><p>For each category, take the median market-cap-to-TVL ratio of its launched tokens, then shrink it toward the global median (4 parts global) so a category with one or two launched tokens cannot set an absurd price. Clamped to 0.02 – 2.5. A category with no launched peer prices at the global median.</p></div>
+      <div><h3>2 · Growth</h3><p>Seven-day TVL change, clamped to −50%…+150%, moves the value by half its size: a protocol growing 20% in a week is worth 10% more than one standing still, and one shrinking 20% is worth 10% less.</p></div>
+      <div><h3>3 · Maturity &amp; reach</h3><p>Age since first listing, up to 3 years, lifts the value by up to 30% — a protocol that has run for years with no token has had longer to build the habit a launch rewards. Each extra chain beyond the first adds 2%, up to 10%.</p></div>
+      <div><h3>4 · Confidence</h3><p>A data-completeness score out of 100. It falls when the 7-day change or the listing date is missing, and when the category has few launched peers to calibrate against. It says how much the snapshot supports the number — not whether a token launches.</p></div>
+    </div>
+    <p class="sub" id="model-footnote"></p>
+  </section>
+
+  <footer class="foot">
+    <p>Token Radar · model <span id="model-version"></span> · Data: DefiLlama protocol index, sealed snapshot. “Records no token” means DefiLlama's record carries no token — it is not proof that none exists. Implied value is the radar's own claim, not a market price. Nothing here is financial advice; farming a protocol means locking real money in a smart contract, so read its own docs first.</p>
+  </footer>
+</div>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
